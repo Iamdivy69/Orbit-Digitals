@@ -18,7 +18,7 @@ export default function Home() {
   const id = useId();
 
   // Words for the Flip Effect
-  const flipWords = ["moves customers", "scales brands", "captures leads", "drives sales"] as const;
+ const flipWords = ["moves customers", "scales brands", "captures leads", "drives sales"];
 
   const sectionVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -213,7 +213,7 @@ useOutsideClick(quoteModalRef as React.RefObject<HTMLDivElement>, () => {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
-        variants={sectionVariants}
+        variants={sectionVariants as any}
       >
           <div className="text-center mb-20">
               <h2 className="text-4xl font-heading font-bold text-white mb-6">Our Services</h2>
@@ -239,7 +239,7 @@ useOutsideClick(quoteModalRef as React.RefObject<HTMLDivElement>, () => {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
-        variants={sectionVariants}
+        variants={sectionVariants as any}
       >
           <div className="text-center mb-20">
               <h2 className="text-4xl font-heading font-bold text-white mb-6">Investment Plans</h2>
@@ -293,7 +293,7 @@ useOutsideClick(quoteModalRef as React.RefObject<HTMLDivElement>, () => {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
-        variants={sectionVariants}
+        variants={sectionVariants as any}
       >
           <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
