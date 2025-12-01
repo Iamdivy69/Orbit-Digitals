@@ -33,7 +33,7 @@ export default function Home() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [active]);
 
-  useOutsideClick(ref, () => setActive(null));
+  useOutsideClick(ref as React.RefObject<HTMLDivElement>, () => setActive(null));
 
   return (
     <main className="min-h-screen container mx-auto px-4 overflow-hidden">
