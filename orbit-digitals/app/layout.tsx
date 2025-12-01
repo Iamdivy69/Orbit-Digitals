@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-// 1. Import ALL the fonts we need
-import { Space_Grotesk, Inter, Dela_Gothic_One } from "next/font/google"; 
+// 1. Import Orbitron for the Hero
+import { Space_Grotesk, Inter, Orbitron } from "next/font/google"; 
 import "./globals.css";
+import { BackgroundGradientAnimation } from "../components/BackgroundGradientAnimation"; 
 import ParticleBackground from "../components/ParticleBackground";
 import Navbar from "../components/Navbar"; 
 import Footer from "../components/Footer";
@@ -11,14 +12,14 @@ import ChatWidget from "../components/ChatWidget";
 const spaceGrotesk = Space_Grotesk({ 
   subsets: ["latin"], 
   weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-heading", // Standard headings
+  variable: "--font-heading", 
 });
 
-// 3. Configure Hero Font (Dela Gothic One)
-const delaGothic = Dela_Gothic_One({ 
+// 3. Configure Hero Font (Orbitron - The Space Font)
+const orbitron = Orbitron({ 
   subsets: ["latin"], 
-  weight: "400",
-  variable: "--font-hero", // SPECIAL VARIABLE just for the hero
+  weight: ["400", "500", "600", "700", "800", "900"], // All weights
+  variable: "--font-hero", 
 });
 
 // 4. Configure Body Text (Inter)
@@ -39,9 +40,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      {/* 5. Add ALL variables to the body class list */}
-      <body className={`${spaceGrotesk.variable} ${inter.variable} ${delaGothic.variable} antialiased font-sans`}>
-        <ParticleBackground />
+      <body className={`${spaceGrotesk.variable} ${inter.variable} ${orbitron.variable} antialiased font-sans`}>
+        
+        {/* BACKGROUND LAYERS */}
+        <div className="fixed inset-0 -z-20">
+            <BackgroundGradientAnimation interactive={false} />
+        </div>
+        <div className="fixed inset-0 -z-10">
+            <ParticleBackground />
+        </div>
+
         <Navbar />
         
         <div className="relative z-10 pt-20">

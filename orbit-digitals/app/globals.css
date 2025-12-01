@@ -6,6 +6,8 @@
   --background: #02060C;
   --foreground: #ededed;
   --orbit-accent: #3CB7FF;
+  --border: rgba(255, 255, 255, 0.1); 
+  --bg-grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
 body {
@@ -33,96 +35,47 @@ body {
     box-shadow: 0 0 25px rgba(60, 183, 255, 0.4);
 }
 
-/* --- Text Gradient Wave Animation --- */
-@keyframes text-wave {
-    0% {
-        background-position: 0% 50%;
-    }
-    100% {
-        background-position: 200% 50%;
-    }
-}
+/* --- ANIMATION KEYFRAMES --- */
 
-.text-gradient {
-    /* Create a gradient that is double the width (200%) so we can slide it */
-    background: linear-gradient(
-        to right,
-        #ffffff 0%,
-        #3CB7FF 25%,
-        #ffffff 50%,
-        #3CB7FF 75%,
-        #ffffff 100%
-    );
-    background-size: 200% auto;
-    
-    /* Clip background to text */
-    color: transparent;
-    -webkit-background-clip: text;
-    background-clip: text;
-    
-    /* Animate the background position */
-    animation: text-wave 3s linear infinite;
-}
-
-/* --- Hero Animations (Floating & Glowing) --- */
-@keyframes hero-float {
-    0%, 100% { transform: translate3d(0, 0, 0); }
-    50% { transform: translate3d(0, -12px, 0); }
-}
-
-@keyframes hero-glow {
-    0%, 100% { filter: drop-shadow(0 0 25px rgba(60, 183, 255, 0.4)); }
-    50% { filter: drop-shadow(0 0 50px rgba(60, 183, 255, 0.75)); }
-}
-
-.animate-hero {
-    animation: hero-float 6s ease-in-out infinite, hero-glow 5s ease-in-out infinite alternate;
-}
-/* --- COMBINED HERO ANIMATIONS --- */
-
-/* 1. Define the Wave Movement */
 @keyframes text-wave {
     0% { background-position: 0% 50%; }
-    100% { background-position: 200% 50%; }
+    100% { background-position: -200% 50%; }
 }
 
-/* 2. Define the Floating Movement */
 @keyframes hero-float {
     0%, 100% { transform: translate3d(0, 0, 0); }
-    50% { transform: translate3d(0, -12px, 0); }
+    50% { transform: translate3d(0, -10px, 0); }
 }
 
-/* 3. Define the Glow Pulse (Using Logo Colors) */
 @keyframes hero-glow {
-    /* Starts with the Dark Blue from your logo as a shadow */
-    0% { filter: drop-shadow(0 0 20px rgba(26, 42, 108, 0.9)); } 
-    /* Pulses to the Bright Cyan from your logo */
-    100% { filter: drop-shadow(0 0 45px rgba(60, 183, 255, 0.8)); }
+    0% { filter: drop-shadow(0 0 5px rgba(60, 183, 255, 0.3)); } 
+    100% { filter: drop-shadow(0 0 15px rgba(76, 76, 76, 0.6)); }
 }
 
-/* 4. THE MASTER CLASS */
+/* --- THE HERO TITLE CLASS --- */
 .hero-title-animated {
-    /* Gradient Settings: BRIGHTER VERSION */
-    /* Uses White and the Logo's Cyan (#3CB7FF) so it is readable on black */
+    /* 1. THE LOGO GRADIENT (Blue -> Cyan -> White -> Cyan -> Blue) */
     background: linear-gradient(
         to right,
-        #ffffff 0%,    /* White */
-        #3CB7FF 45%,   /* Logo Cyan */
-        #85d1ff 50%,   /* Extra Light Cyan Highlight */
-        #3CB7FF 55%,   /* Logo Cyan */
-        #ffffff 100%   /* White */
+        #3CB7FF 0%,     /* Bright Cyan */   
+        #2F4EA4 25%,    /* Mid Blue */
+        #FFFFFF 50%,    /* White Shine Center */
+        #2F4EA4 75%,    /* Mid Blue */
+        #3CB7FF 100%    /* Bright Cyan */
     );
+    
+    /* 2. Size & Position */
     background-size: 200% auto;
     
-    /* Text Clip Settings */
-    color: transparent;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    /* 3. FORCE TRANSPARENCY so gradient shows */
+    color: transparent !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
     
-    /* COMBINED ANIMATIONS */
+    /* 4. Animations */
     animation: 
-        text-wave 8s linear infinite, 
+        text-wave 10s linear infinite, 
         hero-float 6s ease-in-out infinite,
-        hero-glow 5s ease-in-out infinite alternate;
+        hero-glow 4s ease-in-out infinite alternate;
 }

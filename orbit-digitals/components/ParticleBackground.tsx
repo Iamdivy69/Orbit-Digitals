@@ -12,11 +12,9 @@ export default function ParticleBackground() {
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
-    // CONFIGURATION
     const CONFIG = {
-      particleBaseCount: 180,
+      particleBaseCount: 60, // Optimized for performance (Reduced from 180)
       speedRange: [0.02, 0.12],
-      twinkleIntensity: 0.35,
       minRadius: 0.4,
       maxRadius: 1.7,
       parallaxScrollFactor: 0.35,
@@ -28,13 +26,8 @@ export default function ParticleBackground() {
     let animationFrameId: number;
     let width = window.innerWidth;
     let height = window.innerHeight;
-    
-    // SMOOTHING VARIABLES
-    // Current smoothed position (used for drawing)
-    let mouse = { x: width * 0.5, y: height * 0.5 }; 
-    // Target position (where your actual cursor is)
-    let targetMouse = { x: width * 0.5, y: height * 0.5 }; 
-    
+    let mouse = { x: width * 0.5, y: height * 0.5 };
+    let targetMouse = { x: width * 0.5, y: height * 0.5 };
     let targetScroll = window.scrollY;
     let smoothedScroll = targetScroll;
 
@@ -68,7 +61,7 @@ export default function ParticleBackground() {
     };
 
     const createShootingStar = () => {
-      if (Math.random() > 0.985 && shootingStars.length < 2) {
+      if (Math.random() > 0.99 && shootingStars.length < 1) { // Rarer shooting stars
         shootingStars.push({
           x: Math.random() * width,
           y: Math.random() * height * 0.5,
@@ -82,19 +75,15 @@ export default function ParticleBackground() {
     };
 
     const draw = () => {
-      // 1. Smooth out values
       smoothedScroll += (targetScroll - smoothedScroll) * 0.12;
-      // This lerp creates the "drag" effect so it never snaps
       mouse.x += (targetMouse.x - mouse.x) * 0.1;
       mouse.y += (targetMouse.y - mouse.y) * 0.1;
 
       ctx.clearRect(0, 0, width, height);
 
-      // 2. Draw Particles
+      // Draw Particles
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
-        
-        // Use the SMOOTHED mouse values here
         const parallaxY = (smoothedScroll * CONFIG.parallaxScrollFactor) * (1 - p.depth);
         const mx = (mouse.x - width / 2) * CONFIG.mouseStrength * (1 - p.depth);
         const my = (mouse.y - height / 2) * CONFIG.mouseStrength * (1 - p.depth);
@@ -107,26 +96,20 @@ export default function ParticleBackground() {
         if (p.x > width + 30) p.x = -30;
 
         let alpha = p.baseAlpha;
+        // Simple twinkle
         p.twinklePhase += 0.02;
-        alpha = p.baseAlpha * (1 - CONFIG.twinkleIntensity * 0.5 + Math.sin(p.twinklePhase) * CONFIG.twinkleIntensity * 0.5);
+        alpha = p.baseAlpha * (1 - 0.3 + Math.sin(p.twinklePhase) * 0.3);
 
         const drawX = p.x + mx;
         const drawY = p.y + my + parallaxY;
 
-        // Balanced Glow (4x radius)
-        const glowRadius = p.r * 4;
-        const g = ctx.createRadialGradient(drawX, drawY, 0, drawX, drawY, glowRadius);
-        g.addColorStop(0, `rgba(255, 255, 255, ${alpha})`);
-        g.addColorStop(0.4, `rgba(60, 183, 255, ${alpha * 0.4})`);
-        g.addColorStop(1, `rgba(60, 183, 255, 0)`);
-
         ctx.beginPath();
-        ctx.fillStyle = g;
-        ctx.arc(drawX, drawY, glowRadius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+        ctx.arc(drawX, drawY, p.r, 0, Math.PI * 2);
         ctx.fill();
       }
 
-      // 3. Draw Shooting Stars
+      // Draw Shooting Stars
       createShootingStar();
       for (let i = 0; i < shootingStars.length; i++) {
         let s = shootingStars[i];
@@ -173,10 +156,8 @@ export default function ParticleBackground() {
   }, []);
 
   return (
+    // No background color, just the canvas so the gradient shows through
     <div className="fixed inset-0 z-0 pointer-events-none">
-      <div className="absolute inset-0 bg-[#02060C]" />
-      <div className="absolute inset-[-10%] opacity-90" 
-           style={{background: 'radial-gradient(900px at 10% 30%, rgba(60,183,255,0.05), transparent)'}} />
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
     </div>
   );

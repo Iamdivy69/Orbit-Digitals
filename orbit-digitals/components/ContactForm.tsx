@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+// 1. Import the new Button Component
+import { HoverBorderGradient } from "./ui/hover-border-gradient";
 
 export default function ContactForm() {
   const [status, setStatus] = useState("Send Message");
@@ -11,8 +13,8 @@ export default function ContactForm() {
     const form = e.currentTarget;
     const formData = new FormData(form);
     
-    // ⚠️ REPLACE THIS WITH YOUR WEB3FORMS KEY LATER
-    formData.append("access_key", "f4d4da69-2175-4eaf-bf72-fcac84bf89a5"); 
+    // ⚠️ REPLACE THIS WITH YOUR ACTUAL ACCESS KEY
+    formData.append("access_key", "d3970ddf-cf3d-4f05-963f-107b5aeea4dd"); 
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
@@ -52,9 +54,18 @@ export default function ContactForm() {
          <textarea name="message" rows={4} required placeholder="Tell us about your project..." className="w-full mt-2 p-3 bg-black/40 border border-gray-700 rounded-lg text-white focus:border-[#3CB7FF] outline-none transition-colors resize-none"></textarea>
        </div>
        
-       <button type="submit" disabled={status === "Sending..."} className="w-full btn-orbit py-4 rounded-lg font-bold text-white shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all">
-         {status}
-       </button>
+       {/* UPDATED BUTTON */}
+       <div className="w-full pt-2">
+         <HoverBorderGradient
+            containerClassName="rounded-full w-full"
+            as="button"
+            className="bg-[#050A14] text-white w-full flex items-center justify-center font-bold tracking-wide"
+            // Passing necessary button props
+            {...{ type: "submit", disabled: status === "Sending..." }}
+         >
+            <span>{status}</span>
+         </HoverBorderGradient>
+       </div>
     </form>
   );
 }

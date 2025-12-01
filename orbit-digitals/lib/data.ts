@@ -1,13 +1,14 @@
-import { Fingerprint, Monitor, Megaphone, Video, Bot, Sparkles, Users, Printer } from "lucide-react";
+import { Fingerprint, Megaphone, Video, Bot, Sparkles, Printer } from "lucide-react";
 
 export const servicesData = [
   {
     id: "brand",
     title: "Brand Identity",
     icon: Fingerprint,
+    // Standard icon path
+    cardImage: "/service-icons/brand.png", 
     description: "We craft memorable brand identities that resonate with your audience. From logos to full style guides, we define who you are.",
     features: ["Strategy & Positioning", "Visual Identity Systems", "Tone of Voice Guidelines"],
-    // NOW WITH IMAGES
     projects: [
       { title: "Neon Tech", img: "https://images.unsplash.com/photo-1626785774573-4b799314348d?w=800&q=80" },
       { title: "EcoLife", img: "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?w=800&q=80" },
@@ -16,26 +17,15 @@ export const servicesData = [
     ]
   },
   {
-    id: "web",
-    title: "Web Design",
-    icon: Monitor,
-    description: "High-performance websites designed to convert. We blend aesthetics with functionality to build your digital headquarters.",
-    features: ["Custom UI/UX Design", "Responsive Development", "E-commerce Solutions"],
-    projects: [
-        { title: "SaaS Dashboard", img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" },
-        { title: "Fashion Store", img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80" },
-        { title: "Agency Portfolio", img: "https://images.unsplash.com/photo-1545665277-5937bf04a518?w=800&q=80" },
-        { title: "Crypto Landing", img: "https://images.unsplash.com/photo-1517292987719-0369a794ec0f?w=800&q=80" }
-    ]
-  },
-  {
     id: "marketing",
     title: "Digital Marketing",
     icon: Megaphone,
+    // UPDATED: Linking to your new photo
+    cardImage: "/digital-marketing.jpg",
     description: "Data-driven campaigns that put your brand in front of the right eyes. We scale traffic and optimize for ROI.",
     features: ["Paid Social (Meta/TikTok)", "Google Ads (PPC)", "Email Automation"],
     projects: [
-        { title: "Q3 Campaign", img: "https://images.unsplash.com/photo-1533750516457-a7f992034fec?w=800&q=80" },
+        { title: "Q3 Campaign", img: "D:\Orbit-Digitals\orbit-digitals\public\ABD.jpg" },
         { title: "Analytics", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80" }
     ]
   },
@@ -43,6 +33,7 @@ export const servicesData = [
     id: "content",
     title: "Content Production",
     icon: Video,
+    cardImage: "/service-icons/content.png",
     description: "Visual storytelling that stops the scroll. We produce high-quality video and static assets for the social era.",
     features: ["Short-Form Video", "Product Photography", "Motion Graphics"],
     projects: [
@@ -54,6 +45,7 @@ export const servicesData = [
     id: "ai",
     title: "AI Creative",
     icon: Bot,
+    cardImage: "/service-icons/ai.png",
     description: "Leverage the power of Artificial Intelligence to streamline workflows and generate infinite creative variations.",
     features: ["AI Image Generation", "Custom Chatbots", "Process Automation"],
     projects: [
@@ -65,6 +57,7 @@ export const servicesData = [
     id: "aeo",
     title: "AEO Optimization",
     icon: Sparkles,
+    cardImage: "/service-icons/aeo.png",
     description: "The future of SEO. We optimize your brand to be the top answer in AI search engines like ChatGPT and Perplexity.",
     features: ["Knowledge Graph Opt", "Answer Engine Strategy", "Voice Search Prep"],
     projects: [
@@ -73,20 +66,10 @@ export const servicesData = [
     ]
   },
   {
-    id: "influencer",
-    title: "Influencer Marketing",
-    icon: Users,
-    description: "Connect with creators who already have your customers' trust. We manage end-to-end influencer campaigns.",
-    features: ["Creator Discovery", "Contract Negotiation", "Campaign Management"],
-    projects: [
-        { title: "Beauty Collab", img: "https://images.unsplash.com/photo-1512413914633-b5043f4041ea?w=800&q=80" },
-        { title: "Tech Review", img: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&q=80" }
-    ]
-  },
-  {
     id: "print",
     title: "Print & Branding",
     icon: Printer,
+    cardImage: "/service-icons/print.png",
     description: "Tangible assets for the real world. We design physical touchpoints that leave a lasting impression.",
     features: ["Packaging Design", "Event Signage", "Merchandise"],
     projects: [
