@@ -45,8 +45,11 @@ export default function Home() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [active, isQuoteModalOpen]);
 
-  useOutsideClick(serviceModalRef, () => setActive(null)); 
-  useOutsideClick(quoteModalRef, () => {
+  // Fix 1: Add "as React.RefObject<HTMLDivElement>"
+useOutsideClick(serviceModalRef as React.RefObject<HTMLDivElement>, () => setActive(null));
+
+// Fix 2: Do the same for the quote modal
+useOutsideClick(quoteModalRef as React.RefObject<HTMLDivElement>, () => {
     setIsQuoteModalOpen(false);
     setSelectedPlan(null);
   });
@@ -151,7 +154,7 @@ export default function Home() {
               setIsQuoteModalOpen(false);
               setSelectedPlan(null);
             }}
-            modalRef={quoteModalRef}
+            modalRef={quoteModalRef as React.RefObject<HTMLDivElement>}
           />
         )}
       </AnimatePresence>
