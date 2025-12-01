@@ -46,35 +46,37 @@ export default function Navbar() {
         }}
         transition={{ duration: 0.2 }}
         className={cn(
-          // CHANGED: No borders, no rounded corners, full width, transparent/blur mix
           "fixed top-0 inset-x-0 z-[5000] w-full",
-          "flex items-center justify-between px-6 py-4",
-          "backdrop-blur-sm bg-[#02060C]/60" // Subtle background to blend with page
+          // CHANGED: Increased padding from py-4 to py-6 for a taller navbar
+          "flex items-center justify-between px-6 py-6",
+          "backdrop-blur-sm" 
         )}
       >
-        {/* CONTAINER (Keeps content aligned with page grid) */}
+        {/* CONTAINER */}
         <div className="container mx-auto flex items-center justify-between">
             
-            {/* 1. LOGO */}
+            {/* 1. LOGO - INCREASED SIZE */}
             <Link href="/" className="flex items-center gap-2 cursor-pointer">
-                <div className="relative w-10 h-10"> 
+                {/* Changed w-10 h-10 to w-14 h-14 (56px) */}
+                <div className="relative w-14 h-14"> 
                 <Image 
                     src="/LOGO.png" 
                     alt="Orbit Logo" 
                     fill 
-                    className="object-contain"
+                    className="object-contain rounded-full"
                 />
                 </div>
             </Link>
 
-            {/* 2. DESKTOP LINKS */}
-            <div className="hidden md:flex items-center space-x-8">
+            {/* 2. DESKTOP LINKS - INCREASED FONT SIZE */}
+            <div className="hidden md:flex items-center space-x-10"> {/* Increased spacing space-x-8 -> space-x-10 */}
                 {navLinks.map((navItem, idx) => (
                 <Link
                     key={`link=${idx}`}
                     href={navItem.href}
                     className={cn(
-                    "relative text-neutral-300 hover:text-[#3CB7FF] transition-colors font-medium text-sm"
+                    // Changed text-sm to text-base for better readability
+                    "relative text-neutral-300 hover:text-[#3CB7FF] transition-colors font-medium text-base"
                     )}
                 >
                     <span>{navItem.name}</span>
@@ -89,7 +91,8 @@ export default function Navbar() {
                         <HoverBorderGradient
                             containerClassName="rounded-full"
                             as="button"
-                            className="bg-[#050A14] text-white flex items-center space-x-2 px-6 py-2 text-xs"
+                            // Increased padding px-8 py-3 for a larger button
+                            className="bg-[#050A14] text-white flex items-center space-x-2 px-8 py-3 text-sm"
                         >
                             <span>Book Call</span>
                         </HoverBorderGradient>
@@ -100,7 +103,7 @@ export default function Navbar() {
                     onClick={() => setIsOpen(!isOpen)} 
                     className="md:hidden text-white p-2 hover:text-[#3CB7FF] transition-colors"
                 >
-                    {isOpen ? <X size={24} /> : <Menu size={24} />}
+                    {isOpen ? <X size={28} /> : <Menu size={28} />} {/* Increased icon size */}
                 </button>
             </div>
         </div>
@@ -111,14 +114,14 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 w-full bg-[#02060C] border-b border-white/10 shadow-2xl md:hidden flex flex-col"
+            className="absolute top-full left-0 w-full backdrop-blur-sm bg-black/50 border-b border-white/10 shadow-2xl md:hidden flex flex-col"
           >
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="text-lg font-medium text-gray-300 hover:text-[#3CB7FF] hover:bg-white/5 px-6 py-4 border-b border-white/5 last:border-none"
+                className="text-lg font-medium text-gray-300 hover:text-[#3CB7FF] hover:bg-white/5 px-6 py-5 border-b border-white/5 last:border-none"
               >
                 {link.name}
               </Link>
@@ -127,7 +130,7 @@ export default function Navbar() {
                 <Link 
                     href="#contact" 
                     onClick={() => setIsOpen(false)}
-                    className="block w-full btn-orbit py-3 rounded-xl font-bold text-white text-center shadow-lg"
+                    className="block w-full btn-orbit py-4 rounded-xl font-bold text-white text-center shadow-lg"
                 >
                     Book Strategy Call
                 </Link>

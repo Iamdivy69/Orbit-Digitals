@@ -13,23 +13,14 @@ export default function ParticleBackground() {
     if (!ctx) return;
 
     const CONFIG = {
-      particleBaseCount: 60, // Optimized for performance (Reduced from 180)
-      speedRange: [0.02, 0.12],
-      minRadius: 0.4,
-      maxRadius: 1.7,
-      parallaxScrollFactor: 0.35,
-      mouseStrength: 0.12,
+      particleCount: 60, // Keep count low for performance
+      maxRadius: 1.8,
     };
 
-    let particles: any[] = [];
-    let shootingStars: any[] = [];
-    let animationFrameId: number;
     let width = window.innerWidth;
     let height = window.innerHeight;
-    let mouse = { x: width * 0.5, y: height * 0.5 };
-    let targetMouse = { x: width * 0.5, y: height * 0.5 };
-    let targetScroll = window.scrollY;
-    let smoothedScroll = targetScroll;
+    let particles: any[] = [];
+    let animationFrameId: number;
 
     const resizeCanvas = () => {
       const DPR = Math.max(1, window.devicePixelRatio || 1);
@@ -40,124 +31,61 @@ export default function ParticleBackground() {
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-      seedParticles();
+      initParticles();
     };
 
-    const seedParticles = () => {
+    const initParticles = () => {
       particles = [];
-      const count = Math.round(CONFIG.particleBaseCount * (width * height) / (1366 * 768));
-      for (let i = 0; i < count; i++) {
+      for (let i = 0; i < CONFIG.particleCount; i++) {
         particles.push({
           x: Math.random() * width,
           y: Math.random() * height,
-          depth: Math.random(),
-          r: Math.random() * (CONFIG.maxRadius - CONFIG.minRadius) + CONFIG.minRadius,
-          vx: (Math.random() - 0.5) * 0.05,
-          vy: Math.random() * (CONFIG.speedRange[1] - CONFIG.speedRange[0]) + CONFIG.speedRange[0],
-          baseAlpha: Math.random() * 0.6 + 0.12,
-          twinklePhase: Math.random() * Math.PI * 2,
-        });
-      }
-    };
-
-    const createShootingStar = () => {
-      if (Math.random() > 0.99 && shootingStars.length < 1) { // Rarer shooting stars
-        shootingStars.push({
-          x: Math.random() * width,
-          y: Math.random() * height * 0.5,
-          len: Math.random() * 80 + 20,
-          speed: Math.random() * 10 + 6,
-          size: Math.random() * 1 + 0.5,
-          angle: 45 * (Math.PI / 180),
-          life: 100,
+          r: Math.random() * CONFIG.maxRadius,
+          a: Math.random() * 0.5 + 0.1, // Opacity
+          vy: Math.random() * 0.2 + 0.1, // Constant slow upward float
         });
       }
     };
 
     const draw = () => {
-      smoothedScroll += (targetScroll - smoothedScroll) * 0.12;
-      mouse.x += (targetMouse.x - mouse.x) * 0.1;
-      mouse.y += (targetMouse.y - mouse.y) * 0.1;
-
       ctx.clearRect(0, 0, width, height);
 
-      // Draw Particles
-      for (let i = 0; i < particles.length; i++) {
+      for (let i = 0; i < CONFIG.particleCount; i++) {
         const p = particles[i];
-        const parallaxY = (smoothedScroll * CONFIG.parallaxScrollFactor) * (1 - p.depth);
-        const mx = (mouse.x - width / 2) * CONFIG.mouseStrength * (1 - p.depth);
-        const my = (mouse.y - height / 2) * CONFIG.mouseStrength * (1 - p.depth);
 
-        p.x += p.vx;
-        p.y -= p.vy;
+        // Move Particle Upwards (Automatic only)
+        p.y -= p.vy; 
 
-        if (p.y < -20) { p.y = height + 20; p.x = Math.random() * width; }
-        if (p.x < -30) p.x = width + 30;
-        if (p.x > width + 30) p.x = -30;
-
-        let alpha = p.baseAlpha;
-        // Simple twinkle
-        p.twinklePhase += 0.02;
-        alpha = p.baseAlpha * (1 - 0.3 + Math.sin(p.twinklePhase) * 0.3);
-
-        const drawX = p.x + mx;
-        const drawY = p.y + my + parallaxY;
-
-        ctx.beginPath();
-        ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-        ctx.arc(drawX, drawY, p.r, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      // Draw Shooting Stars
-      createShootingStar();
-      for (let i = 0; i < shootingStars.length; i++) {
-        let s = shootingStars[i];
-        s.x += s.speed * Math.cos(s.angle);
-        s.y += s.speed * Math.sin(s.angle);
-        s.life -= 2;
-
-        if (s.life <= 0 || s.x > width || s.y > height) {
-            shootingStars.splice(i, 1);
-            i--;
-            continue;
+        // Reset if out of bounds (Infinite Loop)
+        if (p.y < -10) {
+            p.y = height + 10;
+            p.x = Math.random() * width;
         }
-        
+
+        // Draw Star
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(255, 255, 255, ${s.life / 100})`;
-        ctx.lineWidth = s.size;
-        ctx.moveTo(s.x, s.y);
-        ctx.lineTo(s.x - s.len * Math.cos(s.angle), s.y - s.len * Math.sin(s.angle));
-        ctx.stroke();
+        ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`;
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
       }
 
       animationFrameId = requestAnimationFrame(draw);
     };
 
-    const handleScroll = () => { targetScroll = window.scrollY; };
-    const handleMouseMove = (e: MouseEvent) => { 
-        targetMouse.x = e.clientX; 
-        targetMouse.y = e.clientY; 
-    };
-
+    // Only listen for resize (No Mouse/Scroll tracking)
     window.addEventListener("resize", resizeCanvas);
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("mousemove", handleMouseMove);
-
     resizeCanvas();
     animationFrameId = requestAnimationFrame(draw);
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("mousemove", handleMouseMove);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
   return (
-    // No background color, just the canvas so the gradient shows through
-    <div className="fixed inset-0 z-0 pointer-events-none">
+    <div className="fixed inset-0 -z-10 overflow-hidden">
+      {/* Just the canvas, no background color so the Gradient shows through */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
     </div>
   );
