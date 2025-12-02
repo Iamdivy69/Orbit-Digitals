@@ -54,11 +54,19 @@ export function HoverBorderGradient({
 
   return (
     <Tag
-      suppressHydrationWarning={true} // <--- FIX: Prevents extension errors
+      suppressHydrationWarning={true}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className={cn(
-        "relative flex rounded-full border border-white/10 content-center bg-black/20 hover:bg-black/40 transition-all duration-500 items-center flex-col flex-nowrap gap-10 h-min justify-center overflow-visible p-px decoration-clone w-fit",
+        // BASE STYLES
+        "relative flex rounded-full border border-white/10 content-center bg-black/20 items-center flex-col flex-nowrap gap-10 h-min justify-center overflow-visible p-px decoration-clone w-fit",
+        // --- NEW ANIMATION CLASSES ADDED BELOW ---
+        "transition-all duration-300 ease-out", // Smooth physics
+        "hover:scale-105",                      // Grows 5% larger
+        "hover:-translate-y-1",                 // Lifts up 1 pixel
+        "hover:shadow-[0_10px_20px_-10px_rgba(60,183,255,0.5)]", // Blue glow shadow
+        "active:scale-95",                      // Shrinks when clicked (Tactile feel)
+        // ----------------------------------------
         containerClassName
       )}
       {...props}

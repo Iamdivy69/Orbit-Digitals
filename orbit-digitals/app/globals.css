@@ -10,17 +10,29 @@
   --bg-grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
+/* --- 1. GLOBAL ANATOMY FIX (Fonts) --- */
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Forces 'Inter' on all standard text */
+  font-family: var(--font-inter), sans-serif; 
   overflow-x: hidden; 
 }
 
-/* --- Glass & Neon Effects --- */
+/* Forces 'Space Grotesk' on all Headings automatically */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading), sans-serif;
+}
+
+/* Specific class for the Orbitron Hero font */
+.font-hero {
+  font-family: var(--font-hero), sans-serif;
+}
+
+/* --- 2. GLASS & NEON EFFECTS (Optimized) --- */
 .glass-panel {
-    background: rgba(5, 10, 20, 0.4);
-    backdrop-filter: blur(12px);
+    background: rgba(5, 10, 20, 0.6); /* Slightly darker for better contrast */
+    backdrop-filter: blur(10px); /* Reduced from 12px for better performance */
     border: 1px solid rgba(60, 183, 255, 0.3);
     box-shadow: 0 0 15px rgba(60, 183, 255, 0.05);
 }
@@ -35,7 +47,7 @@ body {
     box-shadow: 0 0 25px rgba(60, 183, 255, 0.4);
 }
 
-/* --- ANIMATION KEYFRAMES --- */
+/* --- 3. ANIMATION KEYFRAMES --- */
 
 @keyframes text-wave {
     0% { background-position: 0% 50%; }
@@ -52,9 +64,9 @@ body {
     100% { filter: drop-shadow(0 0 15px rgba(76, 76, 76, 0.6)); }
 }
 
-/* --- THE HERO TITLE CLASS --- */
+/* --- 4. HERO TITLE CLASS --- */
 .hero-title-animated {
-    /* 1. THE LOGO GRADIENT (Blue -> Cyan -> White -> Cyan -> Blue) */
+    /* The Gradient: Blue -> Cyan -> White -> Cyan -> Blue */
     background: linear-gradient(
         to right,
         #3CB7FF 0%,     /* Bright Cyan */   
@@ -64,18 +76,33 @@ body {
         #3CB7FF 100%    /* Bright Cyan */
     );
     
-    /* 2. Size & Position */
+    /* Size & Position */
     background-size: 200% auto;
     
-    /* 3. FORCE TRANSPARENCY so gradient shows */
+    /* Force Transparency */
     color: transparent !important;
     -webkit-background-clip: text !important;
     background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     
-    /* 4. Animations */
+    /* Animations */
     animation: 
         text-wave 10s linear infinite, 
         hero-float 6s ease-in-out infinite,
         hero-glow 4s ease-in-out infinite alternate;
+}
+
+/* Scrollbar Styling for Modals */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(60, 183, 255, 0.3);
+  border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(60, 183, 255, 0.6);
 }

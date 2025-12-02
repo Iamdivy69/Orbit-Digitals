@@ -58,30 +58,38 @@ useOutsideClick(quoteModalRef as React.RefObject<HTMLDivElement>, () => {
     <main className="min-h-screen container mx-auto px-4 overflow-hidden">
       
       {/* --- EXPANDABLE CARD OVERLAY (Modal) --- */}
+      {/* --- EXPANDABLE CARD OVERLAY (Modal) --- */}
       <AnimatePresence>
         {active && typeof active === "object" && (
           <div className="fixed inset-0 grid place-items-center z-[100]">
+            
+            {/* BACKDROP SHADOW */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/90 backdrop-blur-sm h-full w-full"
+              className="absolute inset-0 bg-black/95 h-full w-full"
+              onClick={() => setActive(null)}
             />
+            
+            {/* MAIN CARD */}
             <motion.div
               layoutId={`card-${active.title}-${id}`}
               ref={serviceModalRef}
-              transition={{ type: "spring", damping: 30, stiffness: 200 }}
-              className="w-full max-w-4xl h-full md:h-auto md:max-h-[80vh] flex flex-col md:flex-row bg-[#050A14] border border-[#3CB7FF]/50 sm:rounded-3xl overflow-hidden shadow-2xl relative"
+              transition={{ type: "spring", damping: 25, stiffness: 300, mass: 0.8 }}
+              className="w-full max-w-4xl h-full md:h-auto md:max-h-[80vh] flex flex-col md:flex-row bg-[#050A14] border border-[#3CB7FF]/50 sm:rounded-3xl overflow-hidden shadow-2xl relative z-10"
             >
+              
+              {/* CLOSE BUTTON (Fixed Position) */}
               <button
-                className="absolute top-4 right-4 bg-black/50 p-2 rounded-full z-50 text-white hover:text-[#3CB7FF] transition-colors hidden md:block"
+                className="absolute top-6 right-6 bg-black/50 p-2 rounded-full z-50 text-white hover:text-[#3CB7FF] transition-colors hover:bg-white/10"
                 onClick={() => setActive(null)}
               >
-                <X size={20} />
+                <X size={24} />
               </button>
 
-              {/* Left Side */}
-              <div className="relative p-8 md:w-1/3 flex flex-col items-center justify-center bg-blue-900/10 border-b md:border-b-0 md:border-r border-white/10">
+              {/* LEFT SIDE (Icon & Title) */}
+              <div className="relative p-8 pt-16 md:pt-8 md:w-1/3 flex flex-col items-center justify-center bg-blue-900/10 border-b md:border-b-0 md:border-r border-white/10">
                  {active.icon && (
                    <motion.div layoutId={`icon-${active.title}-${id}`} className="w-20 h-20 bg-[#3CB7FF]/20 rounded-2xl flex items-center justify-center text-[#3CB7FF] mb-4">
                       <active.icon size={40} />
@@ -92,15 +100,15 @@ useOutsideClick(quoteModalRef as React.RefObject<HTMLDivElement>, () => {
                 </h3>
               </div>
 
-              {/* Right Side */}
-              <div className="flex flex-col p-8 h-full overflow-auto md:w-2/3">
+              {/* RIGHT SIDE (Content) */}
+              <div className="flex flex-col p-8 md:pt-20 h-full overflow-auto md:w-2/3 custom-scrollbar relative">
                 <p className="text-gray-400 text-base leading-relaxed mb-8">
                   {active.description}
                 </p>
 
                 <motion.div
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: 1, transition: { delay: 0.15, duration: 0.3 } }}
+                  animate={{ opacity: 1, transition: { delay: 0.1 } }}
                   exit={{ opacity: 0 }}
                   className="flex-grow"
                 >
@@ -120,10 +128,15 @@ useOutsideClick(quoteModalRef as React.RefObject<HTMLDivElement>, () => {
                           <h4 className="text-sm font-bold text-[#3CB7FF] uppercase tracking-wider mb-3">Recent Projects</h4>
                           <div className="grid grid-cols-2 gap-3">
                               {active.projects?.map((project: any, i: number) => (
-                                  <div key={i} className="aspect-video relative rounded-lg overflow-hidden border border-white/10">
-                                      <img src={project.img} alt={project.title} className="object-cover w-full h-full" />
+                                  <div key={i} className="aspect-video relative rounded-lg overflow-hidden border border-white/10 bg-white/5">
+                                      <img 
+                                        src={project.img} 
+                                        alt={project.title} 
+                                        className="object-cover w-full h-full"
+                                        loading="eager"
+                                      />
                                       <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                                          <span className="text-xs font-bold text-white">{project.title}</span>
+                                          <span className="text-xs font-bold text-white text-center px-2">{project.title}</span>
                                       </div>
                                     </div>
                               ))}

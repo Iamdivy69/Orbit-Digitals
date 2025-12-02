@@ -1,28 +1,24 @@
 import type { Metadata } from "next";
-// 1. Import Orbitron for the Hero
 import { Space_Grotesk, Inter, Orbitron } from "next/font/google"; 
 import "./globals.css";
 import { BackgroundGradientAnimation } from "../components/BackgroundGradientAnimation"; 
 import ParticleBackground from "../components/ParticleBackground";
 import Navbar from "../components/Navbar"; 
 import Footer from "../components/Footer";
-import ChatWidget from "../components/ChatWidget";
+import ChatLoader from "../components/ChatLoader"; // <--- THE FIX
 
-// 2. Configure Main Headings (Space Grotesk)
 const spaceGrotesk = Space_Grotesk({ 
   subsets: ["latin"], 
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-heading", 
 });
 
-// 3. Configure Hero Font (Orbitron - The Space Font)
 const orbitron = Orbitron({ 
   subsets: ["latin"], 
   weight: ["400", "500", "600", "700", "800", "900"], // All weights
   variable: "--font-hero", 
 });
 
-// 4. Configure Body Text (Inter)
 const inter = Inter({ 
   subsets: ["latin"], 
   variable: "--font-inter",
@@ -43,7 +39,8 @@ export default function RootLayout({
       <body className={`${spaceGrotesk.variable} ${inter.variable} ${orbitron.variable} antialiased font-sans`}>
         
         {/* BACKGROUND LAYERS */}
-        <div className="fixed inset-0 -z-20">
+        <div className="fixed inset-0 -z-20 bg-[#02060C]">
+            {/* If the site is still slow, comment out the line below */}
             <BackgroundGradientAnimation interactive={false} />
         </div>
         <div className="fixed inset-0 -z-10">
@@ -57,7 +54,8 @@ export default function RootLayout({
             <Footer />
         </div>
         
-        <ChatWidget />
+        {/* THIS NOW LOADS THE CHAT ONLY ON THE CLIENT SIDE */}
+        <ChatLoader />
       </body>
     </html>
   );
