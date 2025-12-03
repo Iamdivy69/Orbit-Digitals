@@ -6,27 +6,49 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
+  const [showHint, setShowHint] = useState(false);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [messages, setMessages] = useState<{ role: string; parts: string }[]>([]);
+  
+  // 1. IMPROVEMENT: Start with a Welcome Message
+  const [messages, setMessages] = useState<{ role: string; parts: string }[]>([
+    { role: "model", parts: "Systems online! 🚀 I am Orbit AI. How can I help you grow your brand today?" }
+  ]);
+  
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to bottom
+  // 2. IMPROVEMENT: Defined Quick Questions
+  const SUGGESTIONS = [
+    "💰 Pricing Packages",
+    "🚀 Our Services",
+    "📞 Book a Call",
+    "🌐 Web Development"
+  ];
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowHint(true);
+    }, 4000); 
+    return () => clearTimeout(timer);
+  }, []);
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, isOpen]); // Scroll when opened too
 
-  const handleSend = async () => {
-    if (!input.trim() || isLoading) return;
+  const handleSend = async (textOverride?: string) => {
+    const messageToSend = textOverride || input;
+    if (!messageToSend.trim() || isLoading) return;
 
-    const userMessage = input.trim();
+    // Clear input immediately
     setInput("");
-    setMessages((prev) => [...prev, { role: "user", parts: userMessage }]);
+    
+    // Add User Message
+    setMessages((prev) => [...prev, { role: "user", parts: messageToSend }]);
     setIsLoading(true);
 
     try {
-      // Prepare history for API
-      const history = messages.map((msg) => ({
+      const history = messages.slice(-10).map((msg) => ({
         role: msg.role === "user" ? "user" : "model",
         parts: [{ text: msg.parts }],
       }));
@@ -34,11 +56,10 @@ export default function ChatWidget() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage, history }),
+        body: JSON.stringify({ message: messageToSend, history }),
       });
 
       const data = await res.json();
-      
       if(data.error) throw new Error(data.error);
 
       setMessages((prev) => [...prev, { role: "model", parts: data.response }]);
@@ -51,7 +72,33 @@ export default function ChatWidget() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[9999]">
+    <div className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end gap-4">
+      
+      {/* HINT BUBBLE */}
+      <AnimatePresence>
+        {showHint && !isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.9 }}
+            className="relative bg-white text-black px-4 py-3 rounded-xl shadow-lg border border-[#3CB7FF] max-w-[200px]"
+          >
+            <button 
+                onClick={() => setShowHint(false)}
+                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600"
+            >
+                <X size={12} />
+            </button>
+            <p className="text-xs font-bold leading-relaxed">
+              Have questions? <br/>
+              <span className="text-[#0A2A88]">Ask Orbit AI anything!</span>
+            </p>
+            <div className="absolute -bottom-2 right-6 w-4 h-4 bg-white rotate-45 border-b border-r border-[#3CB7FF]"></div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* CHAT WINDOW */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -59,9 +106,9 @@ export default function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="mb-4 w-[350px] h-[500px] flex flex-col overflow-hidden rounded-2xl border border-[#3CB7FF]/30 shadow-[0_0_30px_rgba(60,183,255,0.15)]"
+            className="w-[350px] h-[550px] flex flex-col overflow-hidden rounded-2xl border border-[#3CB7FF]/30 shadow-[0_0_30px_rgba(60,183,255,0.15)]"
             style={{ 
-              background: "rgba(5, 10, 20, 0.9)", 
+              background: "rgba(5, 10, 20, 0.95)", 
               backdropFilter: "blur(16px)" 
             }}
           >
@@ -87,15 +134,8 @@ export default function ChatWidget() {
               </button>
             </div>
 
-            {/* Chat Area */}
+            {/* Messages Area */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-gray-800 scrollbar-track-transparent">
-              {messages.length === 0 && (
-                <div className="text-center mt-20 space-y-3">
-                    <Sparkles className="w-8 h-8 text-[#3CB7FF] mx-auto opacity-50" />
-                    <p className="text-gray-400 text-sm">Welcome to Orbit Digitals.<br/>How can we elevate your brand today?</p>
-                </div>
-              )}
-              
               {messages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                   <div 
@@ -121,6 +161,24 @@ export default function ChatWidget() {
               <div ref={messagesEndRef} />
             </div>
 
+            {/* 3. IMPROVEMENT: SUGGESTION CHIPS */}
+            {messages.length < 3 && !isLoading && (
+                <div className="px-4 pb-2">
+                    <p className="text-xs text-gray-500 mb-2 font-medium">Suggested:</p>
+                    <div className="flex flex-wrap gap-2">
+                        {SUGGESTIONS.map((text) => (
+                            <button
+                                key={text}
+                                onClick={() => handleSend(text)} // Sends immediately on click
+                                className="text-xs bg-white/5 hover:bg-[#3CB7FF] hover:text-black border border-white/10 rounded-full px-3 py-1.5 text-gray-300 transition-all duration-200"
+                            >
+                                {text}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             {/* Input Area */}
             <div className="p-3 bg-black/40 border-t border-white/10">
               <div className="relative">
@@ -129,11 +187,11 @@ export default function ChatWidget() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                  placeholder="Type a message..."
+                  placeholder="Ask me anything..."
                   className="w-full bg-white/5 border border-white/10 rounded-xl pl-4 pr-12 py-3 text-sm text-white focus:outline-none focus:border-[#3CB7FF]/50 transition-colors placeholder:text-gray-600"
                 />
                 <button
-                  onClick={handleSend}
+                  onClick={() => handleSend()}
                   disabled={isLoading}
                   className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-[#3CB7FF] text-black rounded-lg hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
@@ -149,7 +207,10 @@ export default function ChatWidget() {
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+            setIsOpen(!isOpen);
+            setShowHint(false);
+        }}
         className="w-14 h-14 rounded-full bg-gradient-to-br from-[#3CB7FF] to-blue-700 text-white flex items-center justify-center shadow-[0_0_20px_rgba(60,183,255,0.4)] border border-white/20 relative overflow-hidden group"
       >
         <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 rounded-full"></div>
