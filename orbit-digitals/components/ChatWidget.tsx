@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { MessageCircle, X, Send, Loader2, Bot, Sparkles } from "lucide-react";
+import { MessageCircle, X, Send, Loader2, Bot } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function ChatWidget() {
@@ -10,14 +10,13 @@ export default function ChatWidget() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   
-  // 1. IMPROVEMENT: Start with a Welcome Message
+  // 1. Initial Welcome Message (This caused the error before)
   const [messages, setMessages] = useState<{ role: string; parts: string }[]>([
     { role: "model", parts: "Systems online! 🚀 I am Orbit AI. How can I help you grow your brand today?" }
   ]);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // 2. IMPROVEMENT: Defined Quick Questions
   const SUGGESTIONS = [
     "💰 Pricing Packages",
     "🚀 Our Services",
@@ -34,7 +33,7 @@ export default function ChatWidget() {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isOpen]); // Scroll when opened too
+  }, [messages, isOpen]); 
 
   const handleSend = async (textOverride?: string) => {
     const messageToSend = textOverride || input;
@@ -43,12 +42,21 @@ export default function ChatWidget() {
     // Clear input immediately
     setInput("");
     
-    // Add User Message
+    // Add User Message to UI
     setMessages((prev) => [...prev, { role: "user", parts: messageToSend }]);
     setIsLoading(true);
 
     try {
-      const history = messages.slice(-10).map((msg) => ({
+      // --- FIX: Filter out the first message if it's from the model ---
+      // The API history cannot start with a 'model' role.
+      const cleanHistory = messages.filter((msg, index) => {
+          // If it's the very first message AND it's from the model (our welcome msg), skip it.
+          if (index === 0 && msg.role === "model") return false;
+          return true;
+      });
+
+      // Prepare history for API
+      const history = cleanHistory.slice(-10).map((msg) => ({
         role: msg.role === "user" ? "user" : "model",
         parts: [{ text: msg.parts }],
       }));
@@ -161,7 +169,7 @@ export default function ChatWidget() {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* 3. IMPROVEMENT: SUGGESTION CHIPS */}
+            {/* Suggestion Chips */}
             {messages.length < 3 && !isLoading && (
                 <div className="px-4 pb-2">
                     <p className="text-xs text-gray-500 mb-2 font-medium">Suggested:</p>
@@ -169,7 +177,7 @@ export default function ChatWidget() {
                         {SUGGESTIONS.map((text) => (
                             <button
                                 key={text}
-                                onClick={() => handleSend(text)} // Sends immediately on click
+                                onClick={() => handleSend(text)}
                                 className="text-xs bg-white/5 hover:bg-[#3CB7FF] hover:text-black border border-white/10 rounded-full px-3 py-1.5 text-gray-300 transition-all duration-200"
                             >
                                 {text}
