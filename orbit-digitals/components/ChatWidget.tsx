@@ -80,7 +80,12 @@ export default function ChatWidget() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end gap-4">
+    <div className={`
+      fixed z-[9999] flex flex-col items-end gap-4
+      ${isOpen 
+        ? 'inset-0 bg-black/30 backdrop-blur-sm' 
+        : 'bottom-4 right-4 sm:bottom-6 sm:right-6'}
+    `}>
       
       {/* HINT BUBBLE */}
       <AnimatePresence>
@@ -113,10 +118,10 @@ export default function ChatWidget() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="w-[350px] h-[550px] flex flex-col overflow-hidden rounded-2xl border border-[#3CB7FF]/30 shadow-[0_0_30px_rgba(60,183,255,0.15)]"
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-[calc(100%-2rem)] h-[calc(100%-5rem)] max-h-[700px] sm:w-[380px] sm:h-[600px] flex flex-col overflow-hidden rounded-2xl border border-[#3CB7FF]/30 shadow-[0_0_30px_rgba(60,183,255,0.15)]"
             style={{ 
-              background: "rgba(5, 10, 20, 0.95)", 
+              background: "rgba(5, 10, 20, 0.9)", 
               backdropFilter: "blur(16px)" 
             }}
           >
@@ -219,7 +224,10 @@ export default function ChatWidget() {
             setIsOpen(!isOpen);
             setShowHint(false);
         }}
-        className="w-14 h-14 rounded-full bg-gradient-to-br from-[#3CB7FF] to-blue-700 text-white flex items-center justify-center shadow-[0_0_20px_rgba(60,183,255,0.4)] border border-white/20 relative overflow-hidden group"
+        className={`
+          w-14 h-14 rounded-full bg-gradient-to-br from-[#3CB7FF] to-blue-700 text-white flex items-center justify-center shadow-[0_0_20px_rgba(60,183,255,0.4)] border border-white/20 relative overflow-hidden group
+          ${isOpen ? 'fixed bottom-4 right-4 sm:bottom-6 sm:right-6' : ''}
+        `}
       >
         <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 rounded-full"></div>
         {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
