@@ -16,7 +16,7 @@ The project leverages a modern React-based stack optimized for performance and v
 - **UI Components**: Custom components including Shadcn/ui primitives and Aceternity UI-style effects (e.g., `BackgroundGradientAnimation`, `HoverBorderGradient`, `FlipWords`).
 
 ## 3. Application Structure
-
+    
 ### Core Directories
 - **`app/`**: Contains the main application logic using Next.js App Router.
   - `page.tsx`: The primary landing page containing all major sections.
@@ -55,6 +55,10 @@ The project leverages a modern React-based stack optimized for performance and v
 ### 4.5. Contact & Support
 - **Forms**: Integrated `ContactForm` in the main footer area and inside modals.
 - **AI Chat**: A `ChatWidget` (loaded via `ChatLoader`) provides an AI assistant for visitor queries, powered by Google Generative AI.
+- **Admin Panel**: A secure `/admin/services` dashboard for managing service content.
+  - **Authentication**: Protected via Supabase Auth (Email/Password), with a custom login page (`/login`).
+  - **Functionality**: Create, Read, Update, and Delete (CRUD) services.
+  - **Media Management**: Upload cover images and multiple project gallery images directly to Supabase Storage.
 
 ## 5. UI/UX Design
 - **Glassmorphism**: Extensive use of semi-transparent backgrounds with blur (`backdrop-blur`) for cards and modals.

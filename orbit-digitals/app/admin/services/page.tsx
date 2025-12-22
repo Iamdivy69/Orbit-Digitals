@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import { Trash2, Upload, Loader2, Plus, LayoutGrid, Pencil } from "lucide-react";
+import { Trash2, Upload, Loader2, Plus, LayoutGrid, Pencil, LogOut } from "lucide-react";
 
 // Define the Service interface matching Supabase schema
 interface Service {
@@ -20,6 +21,7 @@ export default function AdminServices() {
     const [services, setServices] = useState<Service[]>([]);
     const [loading, setLoading] = useState(true);
     const [uploading, setUploading] = useState(false);
+    const router = useRouter();
 
     // Form State
     const [title, setTitle] = useState("");
@@ -35,8 +37,22 @@ export default function AdminServices() {
     const [existingBgUrl, setExistingBgUrl] = useState<string | null>(null);
 
     useEffect(() => {
-        fetchServices();
-    }, []);
+        const checkSession = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                router.push("/login");
+            } else {
+                fetchServices();
+            }
+        };
+
+        checkSession();
+    }, [router]);
+
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+        router.push("/login");
+    };
 
     const fetchServices = async () => {
         try {
@@ -249,9 +265,18 @@ export default function AdminServices() {
                         <h1 className="text-4xl font-heading font-bold text-white mb-2">Service Manager</h1>
                         <p className="text-gray-400">Manage your agency services dynamically.</p>
                     </div>
-                    <div className="bg-[#3CB7FF]/10 text-[#3CB7FF] px-4 py-2 rounded-full border border-[#3CB7FF]/20 flex items-center gap-2">
-                        <LayoutGrid size={18} />
-                        <span className="font-bold">Admin Panel</span>
+                    <div className="flex items-center gap-4">
+                        <button
+                            onClick={handleLogout}
+                            className="bg-red-500/10 text-red-500 px-4 py-2 rounded-xl border border-red-500/20 flex items-center gap-2 hover:bg-red-500/20 transition-colors"
+                        >
+                            <LogOut size={18} />
+                            <span className="font-bold">Sign Out</span>
+                        </button>
+                        <div className="bg-[#3CB7FF]/10 text-[#3CB7FF] px-4 py-2 rounded-full border border-[#3CB7FF]/20 flex items-center gap-2">
+                            <LayoutGrid size={18} />
+                            <span className="font-bold">Admin Panel</span>
+                        </div>
                     </div>
                 </header>
 
@@ -447,4 +472,3 @@ export default function AdminServices() {
         </div>
     );
 }
-
