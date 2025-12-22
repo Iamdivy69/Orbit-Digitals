@@ -4,12 +4,12 @@ import { Mail, Phone, MapPin, Check, X, Download, Play } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import ContactForm from "../components/ContactForm";
-import { servicesData } from "../lib/data";
+import Services from "../components/Services";
 import { HoverBorderGradient } from "../components/ui/hover-border-gradient";
 import { FlipWords } from "../components/ui/flip-words";
 
 export default function Home() {
-  const [active, setActive] = useState<(typeof servicesData)[number] | boolean | null>(null);
+  const [active, setActive] = useState<any | null>(null);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
 
@@ -299,16 +299,7 @@ export default function Home() {
           <div className="h-1.5 w-24 bg-[#3CB7FF] mx-auto rounded-full shadow-[0_0_15px_#3CB7FF]"></div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {servicesData.map((service) => (
-            <ServiceCard
-              key={service.id}
-              id={id}
-              service={service}
-              onClick={() => setActive(service)}
-            />
-          ))}
-        </div>
+        <Services onSelect={setActive} id={id} />
       </motion.section>
 
       {/* PRICING SECTION */}
@@ -457,26 +448,7 @@ function ContactItem({ icon, title, text }: { icon: React.ReactNode, title: stri
   );
 }
 
-function ServiceCard({ service, id, onClick }: { service: (typeof servicesData)[number], id: string, onClick: () => void }) {
-  return (
-    <motion.div layoutId={`card-${service.title}-${id}`} onClick={onClick} className="cursor-pointer glass-panel p-8 rounded-3xl border border-white/10 hover:border-[#3CB7FF]/60 transition-all duration-300 group flex flex-col h-full hover:shadow-[0_0_40px_-15px_rgba(60,183,255,0.3)]">
-      <motion.div className="relative z-10 flex flex-col h-full">
-        {service.icon && (
-          <motion.div layoutId={`icon-${service.title}-${id}`} className="w-16 h-16 bg-[#3CB7FF]/10 border border-[#3CB7FF]/20 rounded-2xl flex items-center justify-center text-[#3CB7FF] mb-6 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_20px_-5px_rgba(60,183,255,0.2)]">
-            <service.icon />
-          </motion.div>
-        )}
-        <h3 className="text-2xl font-heading font-bold text-white mb-4 group-hover:text-[#3CB7FF] transition-colors">{service.title}</h3>
-        <p className="text-gray-400 text-sm leading-relaxed flex-grow">
-          {service.description}
-        </p>
-        <motion.div className="mt-6 text-xs font-bold text-[#3CB7FF] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          View Projects →
-        </motion.div>
-      </motion.div>
-    </motion.div>
-  );
-}
+
 
 function QuoteModal({ planTitle, onClose, modalRef }: { planTitle: string | null, onClose: () => void, modalRef: React.RefObject<HTMLDivElement> }) {
   return (

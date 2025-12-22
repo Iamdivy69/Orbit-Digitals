@@ -13,7 +13,7 @@ export default function ParticleBackground() {
     if (!ctx) return;
 
     const CONFIG = {
-      particleCount: 60, // Keep count low for performance
+      particleCount: 30, // Reduced for smoother performance
       maxRadius: 1.8,
     };
 
@@ -54,12 +54,12 @@ export default function ParticleBackground() {
         const p = particles[i];
 
         // Move Particle Upwards (Automatic only)
-        p.y -= p.vy; 
+        p.y -= p.vy;
 
         // Reset if out of bounds (Infinite Loop)
         if (p.y < -10) {
-            p.y = height + 10;
-            p.x = Math.random() * width;
+          p.y = height + 10;
+          p.x = Math.random() * width;
         }
 
         // Draw Star

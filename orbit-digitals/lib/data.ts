@@ -5,7 +5,7 @@ export const servicesData = [
     id: "brand",
     title: "Brand Identity",
     icon: Fingerprint,
-    cardImage: "/service-icons/brand.png", 
+    cardImage: "/service-icons/brand.png",
     description: "We craft memorable brand identities that resonate with your audience. From logos to full style guides, we define who you are.",
     features: ["Strategy & Positioning", "Visual Identity Systems", "Tone of Voice Guidelines"],
     pdf: "/pdfs/branding.pdf",
@@ -25,8 +25,8 @@ export const servicesData = [
     features: ["Paid Social (Meta/TikTok)", "Google Ads (PPC)", "Email Automation"],
     pdf: "/pdfs/marketing.pdf",
     projects: [
-        { title: "Q3 Campaign", img: "ABD.jpg" },
-        { title: "Analytics", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80" }
+      { title: "Q3 Campaign", img: "ABD.jpg" },
+      { title: "Analytics", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80" }
     ]
   },
   {
@@ -38,13 +38,13 @@ export const servicesData = [
     features: ["Short-Form Video", "Product Photography", "Motion Graphics"],
     pdf: "/pdfs/content.pdf",
     projects: [
-        // UPDATED: Points to "Viral reel.mp4" in the public root folder
-        { 
-            title: "Viral Reel", 
-            video: "/vid/videos/Viral reel.mp4",
-            img: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80" 
-        },
-        { title: "Product Shoot", img: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=800&q=80" }
+      // UPDATED: Points to "Viral reel.mp4" in the public root folder
+      {
+        title: "Viral Reel",
+        video: "/vid/videos/Viral reel.mp4",
+        img: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80"
+      },
+      { title: "Product Shoot", img: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=800&q=80" }
     ]
   },
   {
@@ -56,8 +56,8 @@ export const servicesData = [
     features: ["AI Image Generation", "Custom Chatbots", "Process Automation"],
     pdf: "/pdfs/ai.pdf",
     projects: [
-        { title: "AI Avatar", img: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&q=80" },
-        { title: "Chatbot UI", img: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=800&q=80" }
+      { title: "AI Avatar", img: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&q=80" },
+      { title: "Chatbot UI", img: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=800&q=80" }
     ]
   },
   {
@@ -69,8 +69,8 @@ export const servicesData = [
     features: ["Knowledge Graph Opt", "Answer Engine Strategy", "Voice Search Prep"],
     pdf: "/pdfs/aeo.pdf",
     projects: [
-        { title: "Search Ranking", img: "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=800&q=80" },
-        { title: "Voice Prep", img: "https://images.unsplash.com/photo-1478737270239-2f02b77ac6d5?w=800&q=80" }
+      { title: "Search Ranking", img: "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=800&q=80" },
+      { title: "Voice Prep", img: "https://images.unsplash.com/photo-1478737270239-2f02b77ac6d5?w=800&q=80" }
     ]
   },
   {
@@ -82,8 +82,8 @@ export const servicesData = [
     features: ["Packaging Design", "Event Signage", "Merchandise"],
     pdf: "/pdfs/print.pdf",
     projects: [
-        { title: "Coffee Bag", img: "https://images.unsplash.com/photo-1559587521-f18c44dc248d?w=800&q=80" },
-        { title: "Business Card", img: "https://images.unsplash.com/photo-1589330694653-383e91131296?w=800&q=80" }
+      { title: "Coffee Bag", img: "https://images.unsplash.com/photo-1559587521-f18c44dc248d?w=800&q=80" },
+      { title: "Business Card", img: "https://images.unsplash.com/photo-1589330694653-383e91131296?w=800&q=80" }
     ]
   }
 ];

@@ -88,6 +88,7 @@ export function HoverBorderGradient({
           position: "absolute",
           width: "100%",
           height: "100%",
+          willChange: "background",
         }}
         initial={{ background: movingMap[direction] }}
         animate={{
