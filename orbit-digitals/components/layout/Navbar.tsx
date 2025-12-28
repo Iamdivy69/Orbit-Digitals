@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
-import { HoverBorderGradient } from "./ui/hover-border-gradient";
+import { HoverBorderGradient } from "../ui/hover-border-gradient";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
@@ -27,53 +27,53 @@ export default function Navbar() {
       )}
     >
       <div className="container mx-auto flex items-center justify-between">
-        
+
         {/* LOGO */}
         <Link href="/" className="flex items-center gap-2 cursor-pointer">
           <div className="relative w-12 h-12">
-            <Image 
-                src="/LOGO.png" 
-                alt="Orbit Logo" 
-                fill 
-                className="object-contain rounded-full"
-                priority // Load logo immediately
+            <Image
+              src="/LOGO.png"
+              alt="Orbit Logo"
+              fill
+              className="object-contain rounded-full"
+              priority // Load logo immediately
             />
           </div>
         </Link>
 
         {/* DESKTOP LINKS */}
         <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((navItem, idx) => (
+          {navLinks.map((navItem, idx) => (
             <Link
-                key={`link=${idx}`}
-                href={navItem.href}
-                className="relative text-neutral-300 hover:text-[#3CB7FF] transition-colors font-medium text-sm"
+              key={`link=${idx}`}
+              href={navItem.href}
+              className="relative text-neutral-300 hover:text-[#3CB7FF] transition-colors font-medium text-sm"
             >
-                <span>{navItem.name}</span>
+              <span>{navItem.name}</span>
             </Link>
-            ))}
+          ))}
         </div>
 
         {/* CTA BUTTON */}
         <div className="flex items-center gap-4">
-            <div className="hidden md:block">
-                <Link href="#contact">
-                    <HoverBorderGradient
-                        containerClassName="rounded-full"
-                        as="button"
-                        className="bg-[#050A14] text-white flex items-center space-x-2 px-6 py-2 text-sm"
-                    >
-                        <span>Book Call</span>
-                    </HoverBorderGradient>
-                </Link>
-            </div>
+          <div className="hidden md:block">
+            <Link href="#contact">
+              <HoverBorderGradient
+                containerClassName="rounded-full"
+                as="button"
+                className="bg-[#050A14] text-white flex items-center space-x-2 px-6 py-2 text-sm"
+              >
+                <span>Book Call</span>
+              </HoverBorderGradient>
+            </Link>
+          </div>
 
-            <button 
-                onClick={() => setIsOpen(!isOpen)} 
-                className="md:hidden text-white p-2 hover:text-[#3CB7FF] transition-colors"
-            >
-                {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden text-white p-2 hover:text-[#3CB7FF] transition-colors"
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
       </div>
 
@@ -98,13 +98,13 @@ export default function Navbar() {
               </Link>
             ))}
             <div className="p-6">
-                <Link 
-                    href="#contact" 
-                    onClick={() => setIsOpen(false)}
-                    className="block w-full bg-[#3CB7FF] hover:bg-white text-black transition-colors py-3 rounded-xl font-bold text-center shadow-lg"
-                >
-                    Book Strategy Call
-                </Link>
+              <Link
+                href="#contact"
+                onClick={() => setIsOpen(false)}
+                className="block w-full bg-[#3CB7FF] hover:bg-white text-black transition-colors py-3 rounded-xl font-bold text-center shadow-lg"
+              >
+                Book Strategy Call
+              </Link>
             </div>
           </motion.div>
         )}

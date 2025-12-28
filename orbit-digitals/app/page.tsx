@@ -3,8 +3,8 @@ import { useState, useId, useRef, useEffect } from "react";
 import { Mail, Phone, MapPin, Check, X, Download, Play } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "@/hooks/use-outside-click";
-import ContactForm from "../components/ContactForm";
-import Services from "../components/Services";
+import ContactForm from "../components/sections/ContactForm";
+import Services from "../components/sections/Services";
 import { HoverBorderGradient } from "../components/ui/hover-border-gradient";
 import { FlipWords } from "../components/ui/flip-words";
 

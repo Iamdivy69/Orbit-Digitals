@@ -1,26 +1,26 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter, Orbitron } from "next/font/google"; 
+import { Space_Grotesk, Inter, Orbitron } from "next/font/google";
 import "./globals.css";
-import { BackgroundGradientAnimation } from "../components/BackgroundGradientAnimation"; 
-import ParticleBackground from "../components/ParticleBackground";
-import Navbar from "../components/Navbar"; 
-import Footer from "../components/Footer";
-import ChatLoader from "../components/ChatLoader"; // <--- THE FIX
+import { BackgroundGradientAnimation } from "../components/animations/BackgroundGradientAnimation";
+import ParticleBackground from "../components/animations/ParticleBackground";
+import Navbar from "../components/layout/Navbar";
+import Footer from "../components/layout/Footer";
+import ChatLoader from "../components/features/chat/ChatLoader"; // <--- THE FIX
 
-const spaceGrotesk = Space_Grotesk({ 
-  subsets: ["latin"], 
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-heading", 
+  variable: "--font-heading",
 });
 
-const orbitron = Orbitron({ 
-  subsets: ["latin"], 
+const orbitron = Orbitron({
+  subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"], // All weights
-  variable: "--font-hero", 
+  variable: "--font-hero",
 });
 
-const inter = Inter({ 
-  subsets: ["latin"], 
+const inter = Inter({
+  subsets: ["latin"],
   variable: "--font-inter",
 });
 
@@ -37,23 +37,23 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${spaceGrotesk.variable} ${inter.variable} ${orbitron.variable} antialiased font-sans`}>
-        
+
         {/* BACKGROUND LAYERS */}
         <div className="fixed inset-0 -z-20 bg-[#02060C]">
-            {/* If the site is still slow, comment out the line below */}
-            <BackgroundGradientAnimation interactive={false} />
+          {/* If the site is still slow, comment out the line below */}
+          <BackgroundGradientAnimation interactive={false} />
         </div>
         <div className="fixed inset-0 -z-10">
-            <ParticleBackground />
+          <ParticleBackground />
         </div>
 
         <Navbar />
-        
+
         <div className="relative pt-20">
-            {children}
-            <Footer />
+          {children}
+          <Footer />
         </div>
-        
+
         {/* THIS NOW LOADS THE CHAT ONLY ON THE CLIENT SIDE */}
         <ChatLoader />
       </body>

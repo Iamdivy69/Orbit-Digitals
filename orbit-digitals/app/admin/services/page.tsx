@@ -14,6 +14,7 @@ interface Service {
     category: string;
     image_url: string;
     image_urls?: string[];
+    features?: string[];
     created_at: string;
 }
 
@@ -27,6 +28,8 @@ export default function AdminServices() {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [category, setCategory] = useState("Social Media");
+    const [features, setFeatures] = useState<string[]>([]);
+    const [currentFeature, setCurrentFeature] = useState("");
 
     // Upload State
     const [bgFile, setBgFile] = useState<File | null>(null);
@@ -75,6 +78,7 @@ export default function AdminServices() {
         setTitle(service.title);
         setDescription(service.description);
         setCategory(service.category);
+        setFeatures(service.features || []);
         setExistingBgUrl(service.image_url);
         setBgFile(null);
         setGalleryFiles(null);
@@ -86,9 +90,21 @@ export default function AdminServices() {
         setTitle("");
         setDescription("");
         setCategory("Social Media");
+        setFeatures([]);
+        setCurrentFeature("");
         setBgFile(null);
         setGalleryFiles(null);
         setExistingBgUrl(null);
+    };
+
+    const addFeature = () => {
+        if (!currentFeature.trim()) return;
+        setFeatures([...features, currentFeature.trim()]);
+        setCurrentFeature("");
+    };
+
+    const removeFeature = (index: number) => {
+        setFeatures(features.filter((_, i) => i !== index));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -159,7 +175,8 @@ export default function AdminServices() {
                         description,
                         category,
                         image_url: finalBgUrl,
-                        image_urls: mergedUrls
+                        image_urls: mergedUrls,
+                        features: features
                     })
                     .eq("id", editingId)
                     .select();
@@ -181,7 +198,8 @@ export default function AdminServices() {
                         description,
                         category,
                         image_url: finalBgUrl || "",
-                        image_urls: finalGalleryUrls
+                        image_urls: finalGalleryUrls,
+                        features: features
                     }]);
 
                 if (insertError) throw insertError;
@@ -329,6 +347,50 @@ export default function AdminServices() {
                                     />
                                 </div>
 
+                                {/* FEATURES SECTION */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-400 mb-2">Includes (Features)</label>
+                                    <div className="flex gap-2 mb-3">
+                                        <input
+                                            type="text"
+                                            value={currentFeature}
+                                            onChange={(e) => setCurrentFeature(e.target.value)}
+                                            onKeyDown={(e) => {
+                                                if (e.key === 'Enter') {
+                                                    e.preventDefault();
+                                                    addFeature();
+                                                }
+                                            }}
+                                            className="flex-1 bg-black/40 border border-white/10 rounded-xl p-3 text-white focus:border-[#3CB7FF] focus:outline-none transition-colors"
+                                            placeholder="e.g. Project Strategy"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={addFeature}
+                                            className="bg-white/10 hover:bg-[#3CB7FF] hover:text-black text-white px-4 rounded-xl transition-colors font-bold"
+                                        >
+                                            Add
+                                        </button>
+                                    </div>
+
+                                    {features.length > 0 && (
+                                        <ul className="space-y-2 max-h-40 overflow-y-auto custom-scrollbar bg-black/20 p-2 rounded-xl border border-white/5">
+                                            {features.map((feature, idx) => (
+                                                <li key={idx} className="flex items-center justify-between text-sm bg-white/5 p-2 rounded-lg">
+                                                    <span className="text-gray-300">{feature}</span>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => removeFeature(idx)}
+                                                        className="text-red-500 hover:text-red-400 p-1"
+                                                    >
+                                                        <Trash2 size={14} />
+                                                    </button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+
                                 {/* BACKGROUND IMAGE INPUT */}
                                 <div>
                                     <label className="block text-sm font-medium text-gray-400 mb-2">
@@ -437,9 +499,18 @@ export default function AdminServices() {
                                         </div>
 
                                         <div className="p-6">
-                                            <p className="text-gray-400 text-sm line-clamp-2 mb-6 h-10">
+                                            <p className="text-gray-400 text-sm line-clamp-2 mb-4 h-10">
                                                 {service.description}
                                             </p>
+
+                                            <div className="mb-4">
+                                                <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Includes</span>
+                                                <p className="text-gray-300 text-sm mt-1">
+                                                    {service.features && service.features.length > 0
+                                                        ? `${service.features.length} items (e.g. ${service.features[0]})`
+                                                        : "No features added"}
+                                                </p>
+                                            </div>
 
                                             <div className="flex items-center justify-between pt-4 border-t border-white/10">
                                                 <span className="text-xs text-gray-600">

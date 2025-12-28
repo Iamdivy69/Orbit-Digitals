@@ -45,7 +45,7 @@ export default function Services({ onSelect, id }: { onSelect: (service: any) =>
                 icon: iconMap[item.title] || iconMap[item.category] || Sparkles,
                 // Use Supabase image_url, fallback to placeholder if needed
                 // ensure features/projects exist to prevent crashes
-                features: ["Project Strategy", "Professional Management", "24/7 Support"],
+                features: item.features || [],
                 projects: item.image_urls && item.image_urls.length > 0
                     ? item.image_urls.map((url: string, index: number) => ({ title: `Project ${index + 1}`, img: url }))
                     : item.image_url
