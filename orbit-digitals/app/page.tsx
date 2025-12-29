@@ -3,11 +3,18 @@ import { useState, useId, useRef, useEffect } from "react";
 import { Mail, Phone, MapPin, Check, X, Download, Play } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "@/hooks/use-outside-click";
-import ContactForm from "../components/sections/ContactForm";
-import Services from "../components/sections/Services";
-import { HoverBorderGradient } from "../components/ui/hover-border-gradient";
 import { FlipWords } from "../components/ui/flip-words";
-import ThreeDMarqueeDemo from "@/components/3d-marquee-demo";
+import { HoverBorderGradient } from "../components/ui/hover-border-gradient";
+import dynamic from "next/dynamic";
+
+const ContactForm = dynamic(() => import("../components/sections/ContactForm"));
+const Services = dynamic(() => import("../components/sections/Services"), {
+  loading: () => <div className="h-96 flex items-center justify-center text-white/20">Loading Services...</div>
+});
+const ThreeDMarqueeDemo = dynamic(() => import("@/components/3d-marquee-demo"), {
+  ssr: false,
+  loading: () => <div className="h-[600px] flex items-center justify-center text-white/20">Loading Portfolio...</div>
+});
 
 export default function Home() {
   const [active, setActive] = useState<any | null>(null);
