@@ -7,6 +7,7 @@ import ContactForm from "../components/sections/ContactForm";
 import Services from "../components/sections/Services";
 import { HoverBorderGradient } from "../components/ui/hover-border-gradient";
 import { FlipWords } from "../components/ui/flip-words";
+import ThreeDMarqueeDemo from "@/components/3d-marquee-demo";
 
 export default function Home() {
   const [active, setActive] = useState<any | null>(null);
@@ -273,7 +274,7 @@ export default function Home() {
             </HoverBorderGradient>
           </a>
 
-          <a href="#services">
+          <a href="#portfolio">
             <HoverBorderGradient
               containerClassName="rounded-full"
               as="button"
@@ -284,6 +285,25 @@ export default function Home() {
           </a>
         </div>
       </section>
+
+      {/* PORTFOLIO SECTION */}
+      <motion.section
+        id="portfolio"
+        className="py-12"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={sectionVariants as any}
+      >
+        <div className="text-center mb-10">
+          <h2 className="text-4xl font-heading font-bold text-white mb-6">Our Portfolio</h2>
+          <div className="h-1.5 w-24 bg-[#3CB7FF] mx-auto rounded-full shadow-[0_0_15px_#3CB7FF]"></div>
+          <p className="text-gray-400 mt-4 max-w-2xl mx-auto">
+            A showcase of our diverse projects and creative solutions.
+          </p>
+        </div>
+        <ThreeDMarqueeDemo />
+      </motion.section>
 
       {/* SERVICES GRID */}
       <motion.section
