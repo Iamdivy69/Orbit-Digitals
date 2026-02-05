@@ -183,7 +183,7 @@ export default function AdminServices() {
 
                 if (updateError) throw updateError;
                 if (!updatedData || updatedData.length === 0) {
-                    alert("Update failed: No rows modified. Check RLS policies.");
+                    alert("Update failed: No rows modified Check RLS policies.");
                     return;
                 }
 
