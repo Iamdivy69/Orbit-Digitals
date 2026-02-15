@@ -86,7 +86,7 @@ export function HoverBorderGradient({
         style={{
           filter: "blur(2.1px)",
           position: "absolute",
-          width: "101%",
+          width: "102%",
           height: "100%",
           willChange: "background",
         }}
