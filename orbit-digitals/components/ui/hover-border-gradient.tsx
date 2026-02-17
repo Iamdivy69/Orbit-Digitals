@@ -87,7 +87,7 @@ export function HoverBorderGradient({
           filter: "blur(2.1px)",
           position: "absolute",
           width: "100%",
-          height: "100%",
+          height: "101%",
           willChange: "background",
         }}
         initial={{ background: movingMap[direction] }}
