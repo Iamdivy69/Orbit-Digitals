@@ -57,7 +57,7 @@ export default function Navbar() {
         {/* CTA BUTTON */}
         <div className="flex items-center gap-4">
           <div className="hidden md:block">
-            <Link href="#contact">
+            <Link href="tel:+919033240720">
               <HoverBorderGradient
                 containerClassName="rounded-full"
                 as="button"
@@ -99,7 +99,7 @@ export default function Navbar() {
             ))}
             <div className="p-6">
               <Link
-                href="#contact"
+                href="tel:+919033240720"
                 onClick={() => setIsOpen(false)}
                 className="block w-full bg-[#3CB7FF] hover:bg-white text-black transition-colors py-3 rounded-xl font-bold text-center shadow-lg"
               >

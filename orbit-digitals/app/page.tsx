@@ -464,12 +464,21 @@ export default function Home() {
 /* --- HELPER COMPONENTS --- */
 
 function ContactItem({ icon, title, text }: { icon: React.ReactNode, title: string, text: string }) {
+  const isEmail = text.includes("@");
+  const isPhone = text.includes("+");
+
   return (
     <div className="flex items-start gap-5">
       <div className="bg-[#3CB7FF]/10 p-3 rounded-full border border-[#3CB7FF]/20 text-[#3CB7FF]">{icon}</div>
       <div>
         <h3 className="font-bold text-white text-lg">{title}</h3>
-        <p className="text-gray-400">{text}</p>
+        {isEmail ? (
+          <a href={`mailto:${text}`} className="text-gray-400 hover:text-[#3CB7FF] transition-colors">{text}</a>
+        ) : isPhone ? (
+          <a href={`tel:${text.replace(/\s/g, "")}`} className="text-gray-400 hover:text-[#3CB7FF] transition-colors">{text}</a>
+        ) : (
+          <p className="text-gray-400">{text}</p>
+        )}
       </div>
     </div>
   );
